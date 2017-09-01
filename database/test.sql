@@ -24,6 +24,10 @@ GO
 INSERT INTO	[core].Destination([Name], [ConnectionString])
 VALUES('VSQL16A', 'Server=VSQL16A.mindflavor.it;Integrated Security=SSPI');
 GO
+INSERT INTO	[core].Destination([Name], [ConnectionString])
+VALUES('V212R2SQL282.mindflavor.it', 'Server=V212R2SQL282.mindflavor.it;Integrated Security=SSPI');
+GO
+
 
 INSERT INTO	[core].Task([Name], [Class], [Parameters], [Debug])
 VALUES('sys.objects', 'SQLBeam.Core.Tasks.Executable.TSQLETL.TSQLETL', 
@@ -33,26 +37,17 @@ VALUES('sys.objects', 'SQLBeam.Core.Tasks.Executable.TSQLETL.TSQLETL',
 	}', 0);
 GO
 
+-- "Query": "Get-WmiObject -Class Win32_Volume | select DeviceID, Caption, Capacity, FreeSpace", 
 -- DELETE [core].Task WHERE [Name] = 'wmi_win32_volume'
 INSERT INTO	[core].Task([Name], [Class], [Parameters], [Debug])
 VALUES('wmi_win32_volume', 'SQLBeam.Core.Tasks.Windows.WMI.SimpleQuery.Query',
 	'{
-		"Query": "Get-WmiObject -Class Win32_Volume | select DeviceID, Caption, Capacity, FreeSpace", 
+		"Query": "SELECT DeviceID, Caption, Capacity, FreeSpace FROM Win32_Volume", 
 		"DestinationTable": "wmi_win32_volume",
 		"CalculatedFields": [{"Key":"Server", "Value":"SERVER_NAME"}, {"Key": "InsertTime", "Value":"INSERT_TIME"}]
 	}', 0);
 GO
 
-
--- DELETE [core].Task WHERE [Name] = 'wmi_win32_volume_core'
---INSERT INTO	[core].Task([Name], [Class], [Parameters], [Debug])
---VALUES('wmi_win32_volume_core', 'SQLBeam.Tasks.Windows.WMI.SimpleQuery.Query',
---	'{
---		"Query": "Get-WmiObject -Class Win32_Volume | select DeviceID, Caption, Capacity, FreeSpace", 
---		"DestinationTable": "wmi_win32_volume",
---		"CalculatedFields": [{"Key":"Server", "Value":"SERVER_NAME"}, {"Key": "InsertTime", "Value":"INSERT_TIME"}]
---	}', 0);
---GO
 
 -- DELETE [core].Task WHERE [Name] = 'sys.sql_logins'
 INSERT INTO	[core].Task([Name], [Class], [Parameters], [Debug])
@@ -112,7 +107,7 @@ OUTPUT INSERTED.[GUID], INSERTED.[CreationTime]
 DEFAULT VALUES
 
 INSERT INTO [core].WaitingTasks([Destination_ID], [Task_ID], [Parameters])
-VALUES(5, 5, '{
+VALUES(8, 7, '{
 	"ConstantFields": [{"Key": "ExecutionID", "Value":100}]
 }');
 
