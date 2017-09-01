@@ -21,13 +21,13 @@ namespace SQLBeam.Core.Tasks.Windows.WMI.SimpleQuery
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
 
             bool fFirst = true;
-            
+
             foreach (var queryResult in searcher.Get())
             {
-                 if(fFirst)
+                if (fFirst)
                 {
                     // initialize the datatable
-                    foreach(var prop in queryResult.Properties)
+                    foreach (var prop in queryResult.Properties)
                     {
                         dt.Columns.Add(new DataColumn(prop.Name, prop.Value.GetType()));
                     }
@@ -36,9 +36,17 @@ namespace SQLBeam.Core.Tasks.Windows.WMI.SimpleQuery
                 }
 
                 DataRow row = dt.NewRow();
-                for (int i=0; i<queryResult.Properties.Count; i++)
+                for (int i = 0; i < queryResult.Properties.Count; i++)
                 {
-                    row[i] = queryResult.Properties[dt.Columns[i].ColumnName].Value;
+                    var val = queryResult.Properties[dt.Columns[i].ColumnName].Value;
+                    if (val == null)
+                    {
+                        row[i] = DBNull.Value;
+                    }
+                    else
+                    {
+                        row[i] = val;
+                    }
                 }
 
                 dt.Rows.Add(row);
