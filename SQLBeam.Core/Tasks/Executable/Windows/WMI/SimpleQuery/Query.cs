@@ -15,16 +15,34 @@ namespace SQLBeam.Core.Tasks.Windows.WMI.SimpleQuery
 
         protected override void PopolateData(Destination dest, DataTable dt)
         {
-            ManagementScope scope = new ManagementScope("\\\\VSQL16A\\root\\cimv2");
+            ManagementScope scope = new ManagementScope($"\\\\{dest.Name}\\root\\cimv2");
             scope.Connect();
-            ObjectQuery query = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
+            ObjectQuery query = new ObjectQuery(Initializations.Query);
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
 
-            foreach (var i in searcher.Get())
+            bool fFirst = true;
+            
+            foreach (var queryResult in searcher.Get())
             {
-                Console.WriteLine(i);
-            }
+                 if(fFirst)
+                {
+                    // initialize the datatable
+                    foreach(var prop in queryResult.Properties)
+                    {
+                        dt.Columns.Add(new DataColumn(prop.Name, prop.Value.GetType()));
+                    }
 
+                    fFirst = false;
+                }
+
+                DataRow row = dt.NewRow();
+                for (int i=0; i<queryResult.Properties.Count; i++)
+                {
+                    row[i] = queryResult.Properties[dt.Columns[i].ColumnName].Value;
+                }
+
+                dt.Rows.Add(row);
+            }
         }
     }
 

@@ -48,6 +48,18 @@ CREATE TABLE [sys_master_files] (
 );
 GO
 
+CREATE TABLE [wmi_win32_volume] (
+	[Server] NVARCHAR(255),	
+	[InsertTime] DATETIME,
+	[ExecutionID] INT,
+	
+	DeviceID NVARCHAR(255), 
+	Caption NVARCHAR(255), 
+	Capacity BIGINT, 
+	FreeSpace BIGINT
+);
+GO
+
 CREATE INDEX idx_sys_master_files_InsertTime ON [sys_master_files]([InsertTime]);
 GO
 
@@ -58,6 +70,7 @@ SELECT * FROM [BeamDWH].[dbo].sys_sql_logins;
 
 SELECT * FROM [BeamDWH].[dbo].[sys_master_files];
 
+SELECT * FROM [BeamDWH].[dbo].[wmi_win32_volume];
 
 USE [master];
 GO
