@@ -1,0 +1,3 @@
+﻿INSERT INTO [core].[Batch] 
+OUTPUT INSERTED.[GUID], INSERTED.[CreationTime]
+DEFAULT VALUES

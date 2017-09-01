@@ -1,0 +1,6 @@
+ConfigConnectionString: Server=localhost\SQL16;Initial Catalog=BeamConfig;Integrated Security=SSPI
+DWHConnectionString: Server=localhost\SQL16;Initial Catalog=BeamDWH;Integrated Security=SSPI
+MaximumThreads: 4
+MainPollIntervalMilliseconds: 300
+JoinTimeReactorMilliseconds: 3000
+JoinTimeExecutorMilliseconds: 300
