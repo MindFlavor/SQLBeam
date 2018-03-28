@@ -63,7 +63,7 @@ GO
 CREATE INDEX idx_sys_master_files_InsertTime ON [sys_master_files]([InsertTime]);
 GO
 
-
+--TRUNCATE TABLE [BeamDWH].[dbo].sys_objects;
 SELECT * FROM [BeamDWH].[dbo].sys_objects;
 
 SELECT * FROM [BeamDWH].[dbo].sys_sql_logins;

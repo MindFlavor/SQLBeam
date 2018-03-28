@@ -28,12 +28,13 @@ INSERT INTO	[core].Destination([Name], [ConnectionString])
 VALUES('V212R2SQL282.mindflavor.it', 'Server=V212R2SQL282.mindflavor.it;Integrated Security=SSPI');
 GO
 
-
+-- DELETE [core].Task WHERE [Name] = 'sys.objects'
 INSERT INTO	[core].Task([Name], [Class], [Parameters], [Debug])
 VALUES('sys.objects', 'SQLBeam.Core.Tasks.Executable.TSQLETL.TSQLETL', 
 	'{
 		"TSQL": "SELECT [name] FROM sys.objects", 
-		"DestinationTable": "sys_objects"
+		"DestinationTable": "sys_objects",
+		"CalculatedFields": [{"Key":"Server", "Value":"SERVER_NAME"}, {"Key": "InsertTime", "Value":"INSERT_TIME"}]
 	}', 0);
 GO
 
@@ -98,8 +99,8 @@ END
 -- End duplicate destinations
 
 INSERT INTO [core].WaitingTasks([Destination_ID], [Task_ID])
-SELECT [ID], 5 FROM [core].[Destination]
-WHERE [Name] LIKE 'VSQL16A_%';
+SELECT [ID], 7 FROM [core].[Destination]
+WHERE [Name] LIKE 'local%';
 
 
 INSERT INTO [core].[Batch] 

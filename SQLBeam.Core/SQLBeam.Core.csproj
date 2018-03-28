@@ -76,6 +76,10 @@
     <Compile Include="Exceptions\TypeNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reactor.cs" />
+    <Compile Include="Tasks\Executable\Backup\Backup.cs" />
+    <Compile Include="Tasks\Executable\Backup\Initializations.cs" />
+    <Compile Include="Tasks\Executable\Backup\Personalizations.cs" />
+    <Compile Include="Tasks\Executable\PersonalizableTaskBase.cs" />
     <Compile Include="Tasks\Executable\BulkCopyBase.cs" />
     <Compile Include="Tasks\Executable\Exception\Exception.cs" />
     <Compile Include="Tasks\Executable\InitializationBase.cs" />
