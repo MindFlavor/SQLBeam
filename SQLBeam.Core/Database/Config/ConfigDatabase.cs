@@ -396,7 +396,7 @@ namespace SQLBeam.Core.Database
                     cmd.Parameters.Add(param);
 
                     param = new SqlParameter("@Parameters", System.Data.SqlDbType.NVarChar, -1);
-                    param.Value = string.IsNullOrEmpty(task.TaskParameters) ? (object)DBNull.Value : task.TaskParameters;
+                    param.Value = string.IsNullOrEmpty(task.Personalization) ? (object)DBNull.Value : task.Personalization;
                     cmd.Parameters.Add(param);
 
                     return (Guid)cmd.ExecuteScalar();

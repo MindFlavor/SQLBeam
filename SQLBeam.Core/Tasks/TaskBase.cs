@@ -15,6 +15,7 @@ namespace SQLBeam.Core.Tasks
         public string Name { get; set; }
         public string Class { get; set; }
         public string TaskParameters { get; set; }
+        public string Personalization { get; set; }
         public bool IsDebug { get; set; }
         public Configuration Configuration { get; set; }
 
@@ -32,6 +33,7 @@ namespace SQLBeam.Core.Tasks
 
         public virtual void Personalize(string parameters)
         {
+            this.Personalization = parameters;
             log.Trace($"{this.GetType().FullName:S}::Personalize(${parameters}) called");
         }
 

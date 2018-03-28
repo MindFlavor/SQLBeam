@@ -82,6 +82,8 @@
   <ItemGroup>
     <Compile Include="Classes\BatchWithTaskInStatesGetRequest.cs" />
     <Compile Include="Classes\BatchTaskCreateRequest.cs" />
+    <Compile Include="Classes\ExecutableTaskCreateBatchRequest.cs" />
+    <Compile Include="Classes\ExecutableTaskCreateRequest.cs" />
     <Compile Include="Controllers\BatchTasksController.cs" />
     <Compile Include="Controllers\DestinationsController.cs" />
     <Compile Include="Controllers\ExecutableTasksController.cs" />

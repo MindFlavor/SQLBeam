@@ -13,6 +13,8 @@ namespace SQLBeam.Core.Tasks
         string Class { get; set; } 
         string TaskParameters { get; set; }
 
+        string Personalization { get; set; }
+
         bool IsDebug { get; set; }
 
         Configuration Configuration { get; set; }
