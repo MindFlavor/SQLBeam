@@ -39,7 +39,7 @@
     <DelaySign>false</DelaySign>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>ISP Source.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>sqlbeam.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
@@ -84,7 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ISP Source.snk" />
+    <None Include="sqlbeam.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
