@@ -42,5 +42,10 @@ namespace SQLBeam.Core.Tasks.Executable
             }
         }
 
+        public override string ToString()
+        {
+            return base.ToString() + $"PersonalizableTaskBase[Initializations={Initializations}, Personalizations={Personalizations}]";
+        }
+
     }
 }

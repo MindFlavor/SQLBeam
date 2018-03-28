@@ -60,6 +60,11 @@ VALUES('sys.sql_logins', 'SQLBeam.Core.Tasks.Executable.TSQLETL.TSQLETL',
 	}', 0);
 GO
 
+DELETE [core].Task WHERE [Name] = 'backup'
+INSERT INTO	[core].Task([Name], [Class], [Parameters], [Debug])
+VALUES('backup', 'SQLBeam.Core.Tasks.Executable.Backup.Backup', NULL, 0);
+GO
+
 INSERT INTO	[core].Task([Name], [Class], [Parameters], [Debug])
 VALUES('exception immediate', 'SQLBeam.Core.Tasks.Executable.Exception.Exception', NULL, 1);
 GO
@@ -116,9 +121,9 @@ INSERT INTO [core].WaitingTasks([Destination_ID], [Task_ID], [Parameters])
 VALUES(2,3, '{Message: "Exception from ' + @@SERVERNAME + '!"}')
 GO 15
 
-INSERT INTO [core].WaitingTasks([Destination_ID], [Task_ID])
-VALUES(5,5)
-GO 5
+INSERT INTO [core].WaitingTasks([Destination_ID], [Task_ID], [Parameters])
+VALUES(1,10, '{DestinationFolder: "C:\\temp\\backup", DataBase: "AdventureWorks2016CTP3", DateTimeFormatSuffix: "yyyyMMdd_HHmmss", EnableCompression:true, Init:true}')
+GO 9
 
 INSERT INTO [core].WaitingTasks([Destination_ID], [Task_ID])
 VALUES(4,4)
