@@ -122,8 +122,9 @@ VALUES(2,3, '{Message: "Exception from ' + @@SERVERNAME + '!"}')
 GO 15
 
 INSERT INTO [core].WaitingTasks([Destination_ID], [Task_ID], [Parameters])
-VALUES(1,10, '{DestinationFolder: "C:\\temp\\backup", DataBase: "AdventureWorks2016CTP3", DateTimeFormatSuffix: "yyyyMMdd_HHmmss", EnableCompression:true, Init:true}')
-GO 9
+VALUES(1,10, '{DestinationFolder: "C:\\temp\\backup", DataBase: "Sella", DateTimeFormatSuffix: "yyyyMMdd_HHmmss", EnableCompression:true, Init:true,
+	BackupType: "Log"}')
+GO 1
 
 INSERT INTO [core].WaitingTasks([Destination_ID], [Task_ID])
 VALUES(4,4)
@@ -137,7 +138,8 @@ SELECT * FROM [core].[ErroredTasks];
 
 
 SELECT 
-* 
+*,
+DATEDIFF(SECOND, StartTime, CompleteTime)
 FROM [core].[AllTasks]
 WHERE [WaitStartTime] > DATEADD(MINUTE, -15, GETDATE())
 ORDER BY [WaitStartTime] DESC;
