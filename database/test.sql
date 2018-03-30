@@ -29,14 +29,17 @@ GO
 INSERT INTO	[core].Destination([Name], [ConnectionString])
 VALUES('V122SQL12.mindflavor.it\S12A', 'Server=V122SQL12.mindflavor.it\S12A;Integrated Security=SSPI');
 GO
+DELETE FROM [core].[Destination] WHERE [Name] = 'V16SQL17A';
 INSERT INTO	[core].Destination([Name], [ConnectionString])
-VALUES('V16SQL17A', 'router,5500;User=sa;Password=***;');
+VALUES('V16SQL17A', 'Server=router,5500;User=sa;Password=PasaCulo00;');
 GO
+DELETE FROM [core].[Destination] WHERE [Name] = 'V16SQL17B';
 INSERT INTO	[core].Destination([Name], [ConnectionString])
-VALUES('V16SQL17B', 'router,5600;User=sa;Password=***;');
+VALUES('V16SQL17B', 'Server=router,5600;User=sa;Password=PasaCulo00;');
 GO
+DELETE FROM [core].[Destination] WHERE [Name] = 'S17Cluster';
 INSERT INTO	[core].Destination([Name], [ConnectionString])
-VALUES('S17Cluster', 'router,5700;User=sa;Password=***;');
+VALUES('S17Cluster', 'Server=router,5700;User=sa;Password=PasaCulo00;');
 GO
 
 
@@ -123,6 +126,14 @@ WHERE [Name] LIKE 'local%';
 INSERT INTO [core].[Batch] 
 OUTPUT INSERTED.[GUID], INSERTED.[CreationTime]
 DEFAULT VALUES
+
+INSERT INTO [core].WaitingTasks([Destination_ID], [Task_ID], [Parameters]) VALUES(1, 1, NULL)
+INSERT INTO [core].WaitingTasks([Destination_ID], [Task_ID], [Parameters]) VALUES(2, 1, NULL)
+INSERT INTO [core].WaitingTasks([Destination_ID], [Task_ID], [Parameters]) VALUES(12, 1, NULL)
+INSERT INTO [core].WaitingTasks([Destination_ID], [Task_ID], [Parameters]) VALUES(13, 1, NULL)
+INSERT INTO [core].WaitingTasks([Destination_ID], [Task_ID], [Parameters]) VALUES(14, 1, NULL)
+GO 500
+
 
 INSERT INTO [core].WaitingTasks([Destination_ID], [Task_ID], [Parameters])
 VALUES(1, 1, '{

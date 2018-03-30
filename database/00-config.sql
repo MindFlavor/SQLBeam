@@ -1,3 +1,7 @@
+USE [master];
+ALTER DATABASE BeamConfig SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+DROP DATABASE BeamConfig;
+
 CREATE DATABASE BeamConfig;
 GO
 USE BeamConfig;
@@ -35,12 +39,20 @@ GO
 CREATE UNIQUE INDEX idxTaskName ON [core].[Task]([Name]);
 GO
 
+CREATE TABLE [core].[TaskPrerequisite] (
+		[Task_GUID] UNIQUEIDENTIFIER,
+		[Requirement_GUID] UNIQUEIDENTIFIER
+);
+
+CREATE UNIQUE CLUSTERED INDEX pki_TaskPrerequisite
+    ON [core].[TaskPrerequisite] ([Task_GUID], [Requirement_GUID]);
+
 CREATE TABLE [core].[WaitingTasks](
 	[GUID] UNIQUEIDENTIFIER PRIMARY KEY CLUSTERED DEFAULT(NEWSEQUENTIALID()),
 	[Destination_ID] INT REFERENCES [core].[Destination]([ID]),
 	[Task_ID] INT REFERENCES [core].[Task]([ID]),
 	[Parameters] NVARCHAR(MAX) NULL,
-	[WaitStartTime] DATETIME2 NOT NULL DEFAULT(GETDATE())
+	[WaitStartTime] DATETIME2 NOT NULL DEFAULT(GETDATE()),
 );
 GO
 
@@ -108,19 +120,6 @@ GO
 
 ALTER TABLE [core].[BatchTasks]  
 ADD CONSTRAINT PK_BatchTasks_BatchAndTask PRIMARY KEY CLUSTERED ([Batch_GUID], [Task_GUID]);  
-GO
-
--- DROP PROCEDURE [core].[GetBatchWithTaskInStatesByGUIDs] 
-CREATE PROCEDURE [core].[GetBatchWithTaskInStatesByGUIDs] 
-	@guids AS [core].[ArrayGUID] READONLY
-AS
-SELECT * FROM [core].[BatchTasks] BT 
-INNER JOIN [core].[Batch] B 
-	ON BT.[Batch_GUID] = B.[GUID]
-INNER JOIN [core].[AllTasks] ATS ON 
-	BT.[Task_GUID] = ATS.GUID
-WHERE BT.[Batch_GUID] IN (SELECT [GUID] FROM @guids)
-ORDER BY BT.[Batch_GUID];
 GO
 
 CREATE VIEW [core].[AllTasks] WITH SCHEMABINDING AS
@@ -200,6 +199,18 @@ SELECT
 FROM               [core] .[ErroredTasks];
 GO
 
+-- DROP PROCEDURE [core].[GetBatchWithTaskInStatesByGUIDs] 
+CREATE PROCEDURE [core].[GetBatchWithTaskInStatesByGUIDs] 
+	@guids AS [core].[ArrayGUID] READONLY
+AS
+SELECT * FROM [core].[BatchTasks] BT 
+INNER JOIN [core].[Batch] B 
+	ON BT.[Batch_GUID] = B.[GUID]
+INNER JOIN [core].[AllTasks] ATS ON 
+	BT.[Task_GUID] = ATS.GUID
+WHERE BT.[Batch_GUID] IN (SELECT [GUID] FROM @guids)
+ORDER BY BT.[Batch_GUID];
+GO
 
 USE [master];
 GO

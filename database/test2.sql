@@ -34,7 +34,8 @@ DROP INDEX sys_master_files.idxInsertTime
 
 SELECT * FROM [dbo].[sys_sql_logins]
 
-SELECT * FROM [dbo].[sys_objects]
+--TRUNCATE TABLE [dbo].[sys_objects];
+SELECT * FROM [dbo].[sys_objects];
 SELECT COUNT_BIG(*) FROM [dbo].[sys_objects];
 
 UPDATE sys_master_files SET server='gigio' WHERE InsertTime = '2017-08-03 15:46:02.307'
