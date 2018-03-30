@@ -177,8 +177,10 @@ T.[name] AS 'Task name'
 END AS 'ElpsedTimeMS'
 FROM [core].[AllTasks] AT 
 INNER JOIN [core].[Task] T ON AT.Task_ID = T.ID
-WHERE [WaitStartTime] > DATEADD(MINUTE, -15, GETDATE())
-ORDER BY [WaitStartTime] DESC;
+--WHERE [WaitStartTime] > DATEADD(MINUTE, -15, GETDATE())
+ORDER BY [ScheduledTime] ASC;
+
+SELECT * FROM  [core].[TaskPrerequisite];
 
 SELECT DATEDIFF(SECOND, StartTime, CompleteTime) FROM [core].[AllTasks]
 ORDER BY 1 DESC

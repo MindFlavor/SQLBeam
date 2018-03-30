@@ -40,8 +40,8 @@ CREATE UNIQUE INDEX idxTaskName ON [core].[Task]([Name]);
 GO
 
 CREATE TABLE [core].[TaskPrerequisite] (
-		[Task_GUID] UNIQUEIDENTIFIER,
-		[Requirement_GUID] UNIQUEIDENTIFIER
+		[Task_GUID] UNIQUEIDENTIFIER NOT NULL,
+		[Requirement_GUID] UNIQUEIDENTIFIER NOT NULL
 );
 
 CREATE UNIQUE CLUSTERED INDEX pki_TaskPrerequisite
