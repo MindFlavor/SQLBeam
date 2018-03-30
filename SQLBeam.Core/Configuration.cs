@@ -15,6 +15,8 @@ namespace SQLBeam.Core
         public int MainPollIntervalMilliseconds;
         public int JoinTimeReactorMilliseconds;
         public int JoinTimeExecutorMilliseconds;
+        public bool RESTEnabled;
+        public int RESTPort;
 
         public void Serialize(string fileName)
         {

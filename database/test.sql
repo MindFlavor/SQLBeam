@@ -2,7 +2,6 @@ USE [BeamConfig];
 GO
 
 
-
 INSERT INTO	[core].Destination([Name], [ConnectionString])
 VALUES('localhost', 'Server=FRCOGNOZBOOK\SQL16;Integrated Security=SSPI');
 GO
@@ -27,6 +26,19 @@ GO
 INSERT INTO	[core].Destination([Name], [ConnectionString])
 VALUES('V212R2SQL282.mindflavor.it', 'Server=V212R2SQL282.mindflavor.it;Integrated Security=SSPI');
 GO
+INSERT INTO	[core].Destination([Name], [ConnectionString])
+VALUES('V122SQL12.mindflavor.it\S12A', 'Server=V122SQL12.mindflavor.it\S12A;Integrated Security=SSPI');
+GO
+INSERT INTO	[core].Destination([Name], [ConnectionString])
+VALUES('V16SQL17A', 'router,5500;User=sa;Password=***;');
+GO
+INSERT INTO	[core].Destination([Name], [ConnectionString])
+VALUES('V16SQL17B', 'router,5600;User=sa;Password=***;');
+GO
+INSERT INTO	[core].Destination([Name], [ConnectionString])
+VALUES('S17Cluster', 'router,5700;User=sa;Password=***;');
+GO
+
 
 -- DELETE [core].Task WHERE [Name] = 'sys.objects'
 INSERT INTO	[core].Task([Name], [Class], [Parameters], [Debug])
@@ -113,7 +125,13 @@ OUTPUT INSERTED.[GUID], INSERTED.[CreationTime]
 DEFAULT VALUES
 
 INSERT INTO [core].WaitingTasks([Destination_ID], [Task_ID], [Parameters])
-VALUES(8, 7, '{
+VALUES(1, 1, '{
+	"CalculatedFields": [{"Server": "SERVER_NAME", "InsertTime":"INSERT_TIME"}]
+}');
+GO 500
+
+INSERT INTO [core].WaitingTasks([Destination_ID], [Task_ID], [Parameters])
+VALUES(1, 1, '{
 	"ConstantFields": [{"Key": "ExecutionID", "Value":100}]
 }');
 
@@ -127,7 +145,7 @@ VALUES(1,10, '{DestinationFolder: "C:\\temp\\backup", DataBase: "Sella", DateTim
 GO 1
 
 INSERT INTO [core].WaitingTasks([Destination_ID], [Task_ID])
-VALUES(4,4)
+VALUES(1,4)
 GO 7
 
 SELECT * FROM [core].[WaitingTasks];
@@ -138,14 +156,24 @@ SELECT * FROM [core].[ErroredTasks];
 
 
 SELECT 
-*,
-DATEDIFF(SECOND, StartTime, CompleteTime)
-FROM [core].[AllTasks]
+T.[name] AS 'Task name'
+,*
+,CASE 
+	WHEN CompleteTime IS NULL THEN
+		DATEDIFF(MILLISECOND, StartTime, ErrorTime)
+	ELSE	
+		DATEDIFF(MILLISECOND, StartTime, CompleteTime)
+END AS 'ElpsedTimeMS'
+FROM [core].[AllTasks] AT 
+INNER JOIN [core].[Task] T ON AT.Task_ID = T.ID
 WHERE [WaitStartTime] > DATEADD(MINUTE, -15, GETDATE())
 ORDER BY [WaitStartTime] DESC;
 
 SELECT DATEDIFF(SECOND, StartTime, CompleteTime) FROM [core].[AllTasks]
 ORDER BY 1 DESC
+
+SELECT COUNT_BIG(*), [Status] FROM [core].[AllTasks]
+GROUP BY [Status]
 
 /*
 DELETE [core].[Batch];

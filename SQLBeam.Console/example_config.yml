@@ -4,3 +4,5 @@ MaximumThreads: 4
 MainPollIntervalMilliseconds: 300
 JoinTimeReactorMilliseconds: 3000
 JoinTimeExecutorMilliseconds: 300
+RESTPort: 9000
+RESTEnabled: true

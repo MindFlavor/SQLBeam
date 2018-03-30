@@ -58,8 +58,17 @@ namespace SQLBeam.Console
 
             #region Startup Owin WebAPI
             // Start OWIN host 
-            SQLBeam.WebAPI.Startup.CoreConfiguration = config;
-            var owin = Microsoft.Owin.Hosting.WebApp.Start<SQLBeam.WebAPI.Startup>(url: "http://*:9000/api");
+            if (config.RESTEnabled)
+            {
+                SQLBeam.WebAPI.Startup.CoreConfiguration = config;
+                var uri = $"http://+:{config.RESTPort:0}/api";
+                log.Info($"Opening REST port at {uri}");
+                var owin = Microsoft.Owin.Hosting.WebApp.Start<SQLBeam.WebAPI.Startup>(url: uri);
+            }
+            else
+            {
+                log.Info("REST is disabled");
+            }
             #endregion
 
             reactor = new Reactor(config);
