@@ -13,10 +13,21 @@ SQLBeam offers a number of predefined tasks but you can implement you tasks on y
 
 ### Task dependencies
 
-ExecutableTasks can depend on other ExecutableTasks. This kind of precedence allows to serialize tasks. For example you might want to avoid performing a backup of every database of an instance at the same time. Specifying a dependency you can put an order on these backups. Also, an ExecutableTask can depend of more than one ExecutableTask giving more flexibility. Right now there is no discrimination between a task completed successfully or not but that will be addressed in the next release.
+ExecutableTasks can depend on other ExecutableTasks. This kind of precedence allows you to serialize tasks. For example you might want to avoid performing a backup of every database of an instance at the same time. Specifying a dependency you can put an order on these backups. Also, an ExecutableTask can depend on more than one ExecutableTask: this gives us more flexibility. Right now there is no discrimination between a task completed successfully or not but that will be addressed in the next release.
 
 
+### ExecutableTask state
 
+An `ExecutableTask` goes between different states. Basically a task first is put in the *wait* queue. As soon as the conditions are met, the *waiting* task gets scheduled. A scheduled task will start executing shortly. A scheduled task is *owned* by an instance of SQLBeam so we make sure no ExecutableTask gets executed twice. Next, a task starts executing. An executing task will then run until completion. Of course at any stage a task can fail: in that case the task will transition to the *error* state. Failed tasks do not get executed again by default but can be changed.
+
+### Task spawning
+
+Tasks can spawn other tasks if need be. For example you can have a *backup everything* task that spawns as many *backup database* tasks as there are databases on the target instance. This way you can compose simple tasks in order to achieve complex operations. 
+
+### Logging
+
+Tasks can print messages to standard console. This is useful for debugging. More meaningful messages will go to a dedicated database table so you can inspect the task operation from a central location. Central logging is expensive so it should not be abused by tasks: a better way to document a complex task is to split it in smaller, independent tasks that will run one after the other. This will also enable concurrent tasks to run on different servers automatically. 
+A task local storage is right now not present but it may be implemented to ease the sub-tasks coordination.
 
 
 ## Known issues
